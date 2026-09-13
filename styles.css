@@ -1,5 +1,4 @@
-﻿
-/* ============================================================
+﻿/* ============================================================
    DESIGN TOKENS
    ============================================================ */
 :root {
@@ -522,4 +521,3 @@ table.data-table tbody tr:hover { background:var(--surface-alt); }
 @media (prefers-reduced-motion:reduce) {
   *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
 }
-

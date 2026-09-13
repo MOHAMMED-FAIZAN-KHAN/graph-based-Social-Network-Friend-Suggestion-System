@@ -1,5 +1,4 @@
-﻿
-'use strict';
+﻿'use strict';
 /* ============================================================================
  * GRAPH SOCIAL â€” v2
  *
@@ -2982,4 +2981,3 @@ window.addEventListener('resize', () => {
 
 // Expose a tiny debug surface (handy in the console).
 window.GraphSocial = { state, SocialGraph, RecommendationEngine, Api, Storage };
-
