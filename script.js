@@ -63,7 +63,7 @@
  * CONFIG
  * ========================================================================== */
 const CONFIG = Object.freeze({
-  STORAGE_VERSION: 2,
+  STORAGE_VERSION: 4,
   DEMO_PASSWORD: 'demo123',
   SUGGESTION_LIMIT: 24,
   MAX_TRAVERSAL_DEPTH: 4,
@@ -623,9 +623,9 @@ const Api = {
  * ========================================================================== */
 const DEMO_USERS = [
   { id: 'u1',  fullName: 'Faizan Khan',  username: 'faizan',  email: 'faizan@demo.com',  password: 'demo123', bio: 'CS student & graph enthusiast.',  avatar: '' },
-  { id: 'u2',  fullName: 'Ali Raza',     username: 'ali',     email: 'ali@demo.com',     password: 'demo123', bio: 'Frontend developer.',             avatar: '' },
-  { id: 'u3',  fullName: 'Ahmed Patel',  username: 'ahmed',   email: 'ahmed@demo.com',   password: 'demo123', bio: 'Backend engineer.',               avatar: '' },
-  { id: 'u4',  fullName: 'Rahul Sharma', username: 'rahul',   email: 'rahul@demo.com',   password: 'demo123', bio: 'Data science student.',           avatar: '' },
+  { id: 'u2',  fullName: 'Kaushik',      username: 'kaushik', email: 'kaushik@demo.com', password: 'demo123', bio: 'Frontend developer.',             avatar: '' },
+  { id: 'u3',  fullName: 'Arya',         username: 'arya',    email: 'arya@demo.com',    password: 'demo123', bio: 'Backend engineer.',               avatar: '' },
+  { id: 'u4',  fullName: 'Animesh',     username: 'animesh', email: 'animesh@demo.com', password: 'demo123', bio: 'Data science student.',           avatar: '' },
   { id: 'u5',  fullName: 'Sameer Ali',   username: 'sameer',  email: 'sameer@demo.com',  password: 'demo123', bio: 'UI/UX designer.',                 avatar: '' },
   { id: 'u6',  fullName: 'Armaan Sheikh',username: 'armaan',  email: 'armaan@demo.com',  password: 'demo123', bio: 'Mobile app developer.',           avatar: '' },
   { id: 'u7',  fullName: 'Zaid Hussain', username: 'zaid',    email: 'zaid@demo.com',    password: 'demo123', bio: 'Cloud architect.',                avatar: '' },
@@ -1129,16 +1129,16 @@ function renderLogin() {
         <div class="auth-divider"><span>or use a demo profile</span></div>
         <div class="demo-login-grid">
           <button class="demo-login" data-demo-login="faizan">Faizan <span>@faizan</span></button>
-          <button class="demo-login" data-demo-login="ali">Ali <span>@ali</span></button>
-          <button class="demo-login" data-demo-login="ahmed">Ahmed <span>@ahmed</span></button>
-          <button class="demo-login" data-demo-login="rahul">Rahul <span>@rahul</span></button>
+          <button class="demo-login" data-demo-login="kaushik">Kaushik <span>@kaushik</span></button>
+          <button class="demo-login" data-demo-login="arya">Arya <span>@arya</span></button>
+          <button class="demo-login" data-demo-login="animesh">Animesh <span>@animesh</span></button>
         </div>
 
         <p style="margin-top:20px;text-align:center;font-size:.9rem;color:var(--text-muted);">
           Donâ€™t have an account? <span class="auth-link" id="goRegister" role="button" tabindex="0">Register</span>
         </p>
         <div class="auth-hint">
-          <strong>Demo accounts:</strong> faizan Â· ali Â· ahmed Â· rahul â€” password <code>demo123</code>
+          <strong>Demo accounts:</strong> faizan Â· kaushik Â· arya Â· animesh â€” password <code>demo123</code>
         </div>
       </div>
     </div>`;

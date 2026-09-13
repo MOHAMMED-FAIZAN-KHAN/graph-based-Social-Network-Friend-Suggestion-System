@@ -83,9 +83,9 @@ The app includes ready-to-use demo profiles:
 | Username | Password |
 | --- | --- |
 | `faizan` | `demo123` |
-| `ali` | `demo123` |
-| `ahmed` | `demo123` |
-| `rahul` | `demo123` |
+| `kaushik` | `demo123` |
+| `arya` | `demo123` |
+| `animesh` | `demo123` |
 
 You can also create a new local account from the registration screen.
 
