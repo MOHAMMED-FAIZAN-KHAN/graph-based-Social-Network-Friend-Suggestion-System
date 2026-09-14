@@ -622,16 +622,16 @@ const Api = {
  * DEMO DATA
  * ========================================================================== */
 const DEMO_USERS = [
-  { id: 'u1',  fullName: 'Faizan Khan',  username: 'faizan',  email: 'faizan@demo.com',  password: 'demo123', bio: 'CS student & graph enthusiast.',  avatar: '' },
+  { id: 'u1',  fullName: 'Faizan Khan',  username: 'faizan',  email: 'faizan@demo.com',  password: 'demo123', bio: 'CS student & team leader.',  avatar: '' },
   { id: 'u2',  fullName: 'Kaushik',      username: 'kaushik', email: 'kaushik@demo.com', password: 'demo123', bio: 'Frontend developer.',             avatar: '' },
   { id: 'u3',  fullName: 'Arya',         username: 'arya',    email: 'arya@demo.com',    password: 'demo123', bio: 'Backend engineer.',               avatar: '' },
-  { id: 'u4',  fullName: 'Animesh',     username: 'animesh', email: 'animesh@demo.com', password: 'demo123', bio: 'Data science student.',           avatar: '' },
-  { id: 'u5',  fullName: 'Sameer Ali',   username: 'sameer',  email: 'sameer@demo.com',  password: 'demo123', bio: 'UI/UX designer.',                 avatar: '' },
+  { id: 'u4',  fullName: 'Animesh',      username: 'animesh', email: 'animesh@demo.com', password: 'demo123', bio: 'Data science student.',           avatar: '' },
+  { id: 'u5',  fullName: 'arhaam',       username: 'arhaam',  email: 'arhaam@demo.com',  password: 'demo123', bio: 'UI/UX designer.',                 avatar: '' },
   { id: 'u6',  fullName: 'Armaan Sheikh',username: 'armaan',  email: 'armaan@demo.com',  password: 'demo123', bio: 'Mobile app developer.',           avatar: '' },
   { id: 'u7',  fullName: 'Zaid Hussain', username: 'zaid',    email: 'zaid@demo.com',    password: 'demo123', bio: 'Cloud architect.',                avatar: '' },
   { id: 'u8',  fullName: 'Ayaan Malik',  username: 'ayaan',   email: 'ayaan@demo.com',   password: 'demo123', bio: 'Game developer.',                 avatar: '' },
-  { id: 'u9',  fullName: 'Kabir Singh',  username: 'kabir',   email: 'kabir@demo.com',   password: 'demo123', bio: 'DevOps engineer.',                avatar: '' },
-  { id: 'u10', fullName: 'Rehan Ahmed',  username: 'rehan',   email: 'rehan@demo.com',   password: 'demo123', bio: 'AI/ML enthusiast.',               avatar: '' },
+  { id: 'u9',  fullName: 'rajiv talwar', username: 'rajiv talwar',   email: 'rajiv talwar@demo.com',   password: 'demo123', bio: 'DevOps engineer.',                avatar: '' },
+  { id: 'u10', fullName: 'modi_paglu',   username: 'modi_paglu',   email: 'modi_paglu@demo.com',   password: 'demo123', bio: 'AI/ML enthusiast.',               avatar: '' },
 ];
 
 const DEMO_FRIENDSHIPS = [
@@ -1078,10 +1078,10 @@ function renderLogin() {
   return `
     <div class="auth-container auth-login-page">
       <section class="auth-showcase" aria-hidden="true">
-        <div class="auth-brand-mark"><span class="brand-dot"></span><span>Graph Social</span></div>
+        <div class="auth-brand-mark"><span class="brand-dot"></span><span>Graph Social Network</span></div>
         <div class="auth-showcase-copy">
           <div class="eyebrow">Your network, visualized</div>
-          <h1>Relationships are easier to understand when you can see them.</h1>
+          <h1>Relationships are easier to understand when you can see them. RIGHT ?</h1>
           <p>Build meaningful connections, discover mutual friends, and explore your social graph in real time.</p>
         </div>
         <div class="auth-network-art">
@@ -1138,7 +1138,7 @@ function renderLogin() {
           Donâ€™t have an account? <span class="auth-link" id="goRegister" role="button" tabindex="0">Register</span>
         </p>
         <div class="auth-hint">
-          <strong>Demo accounts:</strong> faizan Â· kaushik Â· arya Â· animesh â€” password <code>demo123</code>
+          <strong>Demo accounts:</strong> faizan / kaushik / arya / animesh — password <code>demo123</code>
         </div>
       </div>
     </div>`;
