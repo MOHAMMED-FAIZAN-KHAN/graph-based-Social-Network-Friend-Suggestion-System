@@ -1024,10 +1024,13 @@ function render() {
   if (!app) return;
 
   renderToken++;
+  AuthEffects.destroy();
   NetworkView.destroy();
   DsaLab.destroy();
 
   try {
+    document.body.classList.toggle('auth-active', state.loading || state.view === 'login' || state.view === 'register');
+
     if (state.fatalError) {
       app.innerHTML = renderFatalError(state.fatalError);
       return;
@@ -1074,105 +1077,100 @@ function renderFatalError(err) {
 /* ============================================================================
  * LOGIN VIEW
  * ========================================================================== */
+const DEMO_PW = 'demo123';
+const USERS = {
+  faizan: 'faizan@demo.com',
+  kaushik: 'kaushik@demo.com',
+  arya: 'arya@demo.com',
+  animesh: 'animesh@demo.com'
+};
+
 function renderLogin() {
+  const demoUsers = state.users.filter((u) => USERS[u.username]).slice(0, 4);
   return `
-    <div class="auth-container auth-login-page">
-      <section class="auth-showcase" aria-hidden="true">
-        <div class="auth-brand-mark"><span class="brand-dot"></span><span>Graph Social Network</span></div>
-        <div class="auth-showcase-copy">
-          <div class="eyebrow">Your network, visualized</div>
-          <h1>Relationships are easier to understand when you can see them. RIGHT ?</h1>
-          <p>Build meaningful connections, discover mutual friends, and explore your social graph in real time.</p>
-        </div>
-        <div class="auth-network-art">
-          <span class="art-line art-line-one"></span>
-          <span class="art-line art-line-two"></span>
-          <span class="art-line art-line-three"></span>
-          <span class="art-node art-node-main">FK</span>
-          <span class="art-node art-node-one">AR</span>
-          <span class="art-node art-node-two">AS</span>
-          <span class="art-node art-node-three">ZM</span>
-        </div>
-        <div class="auth-proof"><strong>10</strong><span>demo profiles ready to explore</span></div>
-      </section>
+    <div class="login-wrap">
+      <div class="auth-container" id="authContainer">
+        <aside class="auth-showcase" aria-hidden="true">
+          <div class="showcase-glow"></div>
+          <div class="brand-mark"><span class="brand-dot"></span><span>Graph Social</span></div>
+          <div class="showcase-copy">
+            <div class="eyebrow">Your network, visualized</div>
+            <h1>Relationships are easier to understand when you can see them.</h1>
+            <p>Build meaningful connections, discover mutual friends, and explore your social graph in real time.</p>
+          </div>
+          <div class="network-canvas-wrap">
+            <canvas id="loginNetworkCanvas" aria-hidden="true"></canvas>
+          </div>
+          <div class="auth-proof"><strong>${state.users.length || DEMO_USERS.length}</strong><span>demo profiles ready to explore</span></div>
+        </aside>
 
-      <div class="auth-card auth-login-card">
-        <div style="text-align:center;margin-bottom:16px;">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary)"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="3"/><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/>
-            <circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>
-            <line x1="9" y1="9" x2="7" y2="7"/><line x1="15" y1="9" x2="17" y2="7"/>
-            <line x1="9" y1="15" x2="7" y2="17"/><line x1="15" y1="15" x2="17" y2="17"/>
-          </svg>
-        </div>
-        <h2>Welcome back</h2>
-        <p class="auth-subtitle">Sign in to continue exploring your network.</p>
+        <main class="auth-card">
+          <div class="logo-icon">${LOGO_SVG}</div>
+          <h2>Welcome back</h2>
+          <p class="auth-subtitle">Sign in to continue exploring your network.</p>
 
-        <form id="loginForm" novalidate>
           <div class="form-group">
-            <label for="loginIdentifier">Email or username</label>
-            <input type="text" class="form-control" id="loginIdentifier" name="identifier"
-                   placeholder="faizan or faizan@demo.com" value="faizan" autocomplete="username" />
+            <label for="loginId">Email or username</label>
+            <input type="text" class="form-control" id="loginId" value="faizan" placeholder="faizan or faizan@demo.com" autocomplete="username" />
           </div>
           <div class="form-group">
-            <label for="loginPassword">Password</label>
-            <input type="password" class="form-control" id="loginPassword" name="password"
-                   placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" value="demo123" autocomplete="current-password" />
+            <label for="loginPw">Password</label>
+            <input type="password" class="form-control" id="loginPw" value="demo123" placeholder="demo123" autocomplete="current-password" />
           </div>
           <div id="loginError" hidden class="form-error" role="alert"></div>
-          <button type="submit" class="btn btn-primary auth-submit" id="loginBtn">
-            Sign in <span aria-hidden="true">â†’</span>
-          </button>
-        </form>
+          <button type="button" class="btn btn-primary btn-block" id="loginBtn">Sign in →</button>
 
-        <div class="auth-divider"><span>or use a demo profile</span></div>
-        <div class="demo-login-grid">
-          <button class="demo-login" data-demo-login="faizan">Faizan <span>@faizan</span></button>
-          <button class="demo-login" data-demo-login="kaushik">Kaushik <span>@kaushik</span></button>
-          <button class="demo-login" data-demo-login="arya">Arya <span>@arya</span></button>
-          <button class="demo-login" data-demo-login="animesh">Animesh <span>@animesh</span></button>
-        </div>
+          <div class="auth-divider"><span>or use a demo profile</span></div>
+          <div class="demo-grid">
+            ${demoUsers.map((u) => `
+              <button type="button" class="demo-btn" data-u="${escapeHTML(u.username)}">
+                ${escapeHTML(u.fullName.split(' ')[0])}<span>@${escapeHTML(u.username)}</span>
+              </button>`).join('')}
+          </div>
 
-        <p style="margin-top:20px;text-align:center;font-size:.9rem;color:var(--text-muted);">
-          Donâ€™t have an account? <span class="auth-link" id="goRegister" role="button" tabindex="0">Register</span>
-        </p>
-        <div class="auth-hint">
-          <strong>Demo accounts:</strong> faizan / kaushik / arya / animesh — password <code>demo123</code>
-        </div>
+          <div class="auth-hint"><strong>Demo accounts:</strong> faizan / kaushik / arya / animesh — password <code>${DEMO_PW}</code></div>
+          <p class="footer-text">Don't have an account? <span class="auth-link" id="goRegister" role="button" tabindex="0">Register</span></p>
+        </main>
       </div>
     </div>`;
 }
 
 function bindLogin() {
-  const form = document.getElementById('loginForm');
-  const errorBox = document.getElementById('loginError');
+  AuthEffects.mount();
 
-  const submit = () => {
-    const identifier = document.getElementById('loginIdentifier').value.trim();
-    const password = document.getElementById('loginPassword').value;
-    errorBox.hidden = true;
+  const loginBtn = document.getElementById('loginBtn');
+  const loginId = document.getElementById('loginId');
+  const loginPw = document.getElementById('loginPw');
+  const err = document.getElementById('loginError');
 
-    if (!identifier || !password) {
-      errorBox.textContent = 'Please fill in all fields.';
-      errorBox.hidden = false;
-      return;
-    }
-    const result = login(identifier, password);
-    if (!result.success) {
-      errorBox.textContent = result.message;
-      errorBox.hidden = false;
-      showToast(result.message, 'error');
-    }
+  const showLoginError = (message) => {
+    if (!err) return;
+    err.textContent = message;
+    err.hidden = false;
   };
 
-  form?.addEventListener('submit', (e) => { e.preventDefault(); submit(); });
+  const submitLogin = () => {
+    const id = loginId?.value.trim() ?? '';
+    const pw = loginPw?.value ?? '';
+    if (err) err.hidden = true;
 
-  document.querySelectorAll('[data-demo-login]').forEach((button) => {
+    const result = login(id, pw);
+    if (!result.success) showLoginError(result.message);
+  };
+
+  loginBtn?.addEventListener('click', submitLogin);
+  [loginId, loginPw].forEach((input) => {
+    input?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submitLogin();
+    });
+  });
+
+  document.querySelectorAll('[data-u]').forEach((button) => {
     button.addEventListener('click', () => {
-      document.getElementById('loginIdentifier').value = button.getAttribute('data-demo-login');
-      document.getElementById('loginPassword').value = CONFIG.DEMO_PASSWORD;
-      submit();
+      if (loginId) loginId.value = button.getAttribute('data-u') ?? '';
+      if (loginPw) loginPw.value = DEMO_PW;
+      if (err) err.hidden = true;
+      loginPw?.focus();
     });
   });
 
@@ -1183,12 +1181,217 @@ function bindLogin() {
   });
 }
 
+const AuthEffects = (() => {
+  let bg = null, bctx = null, bgRaf = null;
+  let W = 0, H = 0, particles = [], t = 0;
+  let nc = null, nctx = null, networkRaf = null, nt = 0;
+  let cleanupFns = [];
+
+  const NODES = [
+  { x: .5,  y: .38, label: 'FK', main: true },
+  { x: .2,  y: .18, label: 'AR' },
+  { x: .78, y: .15, label: 'KU' },
+  { x: .72, y: .72, label: 'AN' },
+  { x: .15, y: .62, label: 'RJ' },
+  { x: .88, y: .46, label: 'SM' }
+];
+
+  const EDGES = [[0,1],[0,2],[0,3],[1,4],[2,5],[1,2],[3,5]];
+
+  function resize() {
+    if (!bg) return;
+    W = bg.width = window.innerWidth;
+    H = bg.height = window.innerHeight;
+    initParticles();
+  }
+
+  function initParticles() {
+    particles = [];
+    const N = Math.min(70, Math.floor(W * H / 14000));
+    for (let i = 0; i < N; i++) {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        z: Math.random() * 800 + 200,
+        vx: (Math.random() - .5) * .25,
+        vy: (Math.random() - .5) * .25,
+        vz: (Math.random() - .5) * .4,
+        r: Math.random() * 2.5 + 1,
+        hue: 200 + Math.random() * 80,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function project(x, y, z) {
+    const fov = 600;
+    const s = fov / (fov + z);
+    return { sx: x * s + W / 2 * (1 - s), sy: y * s + H / 2 * (1 - s), s };
+  }
+
+  function drawBg() {
+    if (!bctx) return;
+    bctx.clearRect(0, 0, W, H);
+    bctx.fillStyle = '#080d1a';
+    bctx.fillRect(0, 0, W, H);
+
+    t += .008;
+    const sorted = [...particles].sort((a, b) => b.z - a.z);
+
+    for (let i = 0; i < sorted.length; i++) {
+      const p = sorted[i];
+      p.x += p.vx; p.y += p.vy; p.z += p.vz;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      if (p.z < 100) p.z = 900; if (p.z > 900) p.z = 100;
+
+      const pulse = Math.sin(t * 2 + p.phase) * .5 + .5;
+      const { sx, sy, s } = project(p.x, p.y, p.z);
+      const r = p.r * s * (1 + pulse * .3);
+      const alpha = s * (.7 + pulse * .3);
+
+      // Draw edges between nearby particles
+      for (let j = i + 1; j < sorted.length; j++) {
+        const q = sorted[j];
+        const { sx: qx, sy: qy, s: qs } = project(q.x, q.y, q.z);
+        const dist = Math.hypot(sx - qx, sy - qy);
+        const maxDist = 140 + 50 * ((s + qs) / 2);
+        if (dist < maxDist) {
+          const lineAlpha = ((1 - dist / maxDist) * .22) * Math.min(s, qs) * 1.5;
+          const grad = bctx.createLinearGradient(sx, sy, qx, qy);
+          grad.addColorStop(0, `hsla(${p.hue},80%,70%,${lineAlpha})`);
+          grad.addColorStop(1, `hsla(${q.hue},80%,70%,${lineAlpha})`);
+          bctx.beginPath(); bctx.moveTo(sx, sy); bctx.lineTo(qx, qy);
+          bctx.strokeStyle = grad; bctx.lineWidth = .6; bctx.stroke();
+        }
+      }
+
+      // Draw glowing particle
+      const gr = bctx.createRadialGradient(sx, sy, 0, sx, sy, r * 3);
+      gr.addColorStop(0, `hsla(${p.hue},90%,75%,${alpha})`);
+      gr.addColorStop(.5, `hsla(${p.hue},80%,65%,${alpha * .5})`);
+      gr.addColorStop(1, `hsla(${p.hue},70%,60%,0)`);
+      bctx.beginPath(); bctx.arc(sx, sy, r * 3, 0, Math.PI * 2);
+      bctx.fillStyle = gr; bctx.fill();
+    }
+    bgRaf = requestAnimationFrame(drawBg);
+  }
+
+  function drawNetwork() {
+    if (!nc || !nctx) return;
+    const width = nc.width  = nc.offsetWidth;
+    const height = nc.height = nc.offsetHeight;
+    nctx.clearRect(0, 0, width, height);
+    nt += .012;
+
+    // Draw edges with flowing gradient animation
+    EDGES.forEach(([a, b]) => {
+      const na = NODES[a], nb = NODES[b];
+      const ax = na.x * width, ay = na.y * height;
+      const bx = nb.x * width, by = nb.y * height;
+      const flow = Math.sin(nt * 2 - (a + b)) * .5 + .5;
+      const g = nctx.createLinearGradient(ax, ay, bx, by);
+      g.addColorStop(0,    'rgba(34,211,238,.12)');
+      g.addColorStop(flow, 'rgba(34,211,238,.55)');
+      g.addColorStop(1,    'rgba(34,211,238,.08)');
+      nctx.beginPath(); nctx.moveTo(ax, ay); nctx.lineTo(bx, by);
+      nctx.strokeStyle = g; nctx.lineWidth = 1.5; nctx.stroke();
+    });
+
+    // Draw nodes with pulse halos
+    NODES.forEach((n, i) => {
+      const x = n.x * width, y = n.y * height;
+      const pulse = Math.sin(nt * 2.5 + i * .8) * .5 + .5;
+      const r = n.main ? 26 : 18;
+
+      // Halo
+      nctx.beginPath(); nctx.arc(x, y, r + 3 * pulse, 0, Math.PI * 2);
+      nctx.fillStyle = `rgba(34,211,238,${.06 + .04 * pulse})`; nctx.fill();
+
+      // Node body
+      nctx.beginPath(); nctx.arc(x, y, r, 0, Math.PI * 2);
+      nctx.fillStyle = n.main ? 'rgba(255,255,255,.22)' : 'rgba(255,255,255,.13)'; nctx.fill();
+      nctx.strokeStyle = `rgba(255,255,255,${.5 + .3 * pulse})`;
+      nctx.lineWidth = 1.5; nctx.stroke();
+
+      // Label
+      nctx.fillStyle = '#fff';
+      nctx.font = `${n.main ? '700' : '600'} ${n.main ? 11 : 9}px sans-serif`;
+      nctx.textAlign = 'center'; nctx.textBaseline = 'middle';
+      nctx.fillText(n.label, x, y);
+    });
+
+    networkRaf = requestAnimationFrame(drawNetwork);
+  }
+
+  function mount() {
+    destroy();
+
+    bg = document.getElementById('canvas3d');
+    bctx = bg?.getContext('2d') ?? null;
+    nc = document.getElementById('loginNetworkCanvas');
+    nctx = nc?.getContext('2d') ?? null;
+
+    setTimeout(() => document.getElementById('authContainer')?.classList.add('visible'), 80);
+
+    if (bg && bctx) {
+      window.addEventListener('resize', resize);
+      cleanupFns.push(() => window.removeEventListener('resize', resize));
+      resize();
+      drawBg();
+    }
+
+    if (nc && nctx) {
+      window.addEventListener('resize', drawNetwork);
+      cleanupFns.push(() => window.removeEventListener('resize', drawNetwork));
+      drawNetwork();
+    }
+
+    const card = document.getElementById('authContainer');
+    const wrap = document.querySelector('.login-wrap');
+    if (card && wrap) {
+      card.style.transformStyle = 'preserve-3d';
+      wrap.style.perspective = '1200px';
+
+      const onMouseMove = (e) => {
+        const rx = ((e.clientY / window.innerHeight) - .5) * 6;
+        const ry = ((e.clientX / window.innerWidth)  - .5) * -6;
+        card.style.transform = `translateY(0) scale(1) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        card.style.transition = 'transform .1s ease';
+      };
+      const onMouseLeave = () => {
+        card.style.transform = 'translateY(0) scale(1) rotateX(0deg) rotateY(0deg)';
+        card.style.transition = 'transform .6s ease';
+      };
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseleave', onMouseLeave);
+      cleanupFns.push(() => {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseleave', onMouseLeave);
+      });
+    }
+  }
+
+  function destroy() {
+    if (bgRaf) cancelAnimationFrame(bgRaf);
+    if (networkRaf) cancelAnimationFrame(networkRaf);
+    bgRaf = null;
+    networkRaf = null;
+    cleanupFns.forEach((fn) => { try { fn(); } catch { /* noop */ } });
+    cleanupFns = [];
+    bg = null; bctx = null; nc = null; nctx = null;
+  }
+
+  return { mount, destroy };
+})();
 /* ============================================================================
  * REGISTER VIEW
  * ========================================================================== */
 function renderRegister() {
   return `
-    <div class="auth-container">
+    <div class="login-wrap">
+    <div class="auth-container visible">
       <div class="auth-card" style="max-width:480px;">
         <h2>Create account</h2>
         <p class="auth-subtitle">Join the Graph Social network</p>
@@ -1228,6 +1431,7 @@ function renderRegister() {
           Already have an account? <span class="auth-link" id="goLogin" role="button" tabindex="0">Sign in</span>
         </p>
       </div>
+    </div>
     </div>`;
 }
 

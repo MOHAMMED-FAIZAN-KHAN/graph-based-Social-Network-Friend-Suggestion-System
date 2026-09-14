@@ -1,166 +1,94 @@
 # Graph Social
 
-### A social network you can explore, understand, and grow
+### A visual social-network demo built with graph algorithms
 
-Most social platforms show you a list of people.
+Graph Social is a frontend-only web app that turns a small social network into an interactive graph. Every person is a node, every friendship is an edge, and suggestions are ranked using real graph-analysis logic.
 
-**Graph Social shows you the relationships between them.**
-
-This project turns a social network into an interactive graph. Every person becomes a node, every friendship becomes an edge, and every recommendation is the result of real graph analysis happening behind the scenes.
-
-Sign in as a demo user, discover people through mutual connections, trace paths across the network, and watch classic algorithms work on live data.
+The app includes demo login accounts, friend requests, recommendations, graph analytics, an interactive canvas network, and an algorithm lab for BFS and Dijkstra.
 
 ---
 
-## The story behind the project
+## Features
 
-Imagine a room filled with people.
+### Animated auth screen
 
-You know some of them directly. Others are connected through a friend, a classmate, or a colleague. The most interesting connections are often not the obvious ones. They are the people who are only a few steps away.
+- Full-screen canvas particle background through `#canvas3d`
+- Animated login card with mouse tilt/parallax
+- Mini network canvas in the login showcase panel
+- Demo account shortcuts
+- Local account registration
 
-Graph Social models that room as a graph:
+### Dashboard
 
-- People are vertices.
-- Friendships are edges.
-- Mutual friends create stronger recommendations.
-- Shortest paths reveal degrees of separation.
-- Network statistics show how the whole community is connected.
+- Current friend count
+- Pending request count
+- Network reach
+- Recommended people
+- Recent graph activity
 
-The result is a learning-focused social network where the interface and the data structures tell the same story.
+### Friend suggestions
 
----
-
-## What you can do
-
-### Explore your dashboard
-
-See your direct friends, network reach, pending requests, and recommended connections at a glance.
-
-### Discover people you may know
-
-Recommendations are ranked using a weighted combination of:
+Suggestions are ranked using:
 
 - Adamic-Adar similarity
 - Jaccard similarity
 - Graph proximity
 - Network popularity
 
-The recommendation engine looks beyond direct friends and explains why each person appears.
+Each recommendation includes an explanation such as mutual friends, hop distance, and connection strength.
 
-### Visualize your network
+### Interactive network
 
-Open the interactive network explorer to:
+The network view supports:
 
-- Drag nodes around the graph
-- Pan across the canvas
-- Zoom in and out
-- Inspect relationships by hovering
-- Open a user's profile by clicking a node
+- Dragging nodes
+- Panning the canvas
+- Zooming with the mouse wheel
+- Hovering nodes for relationship context
+- Clicking a node to open a profile
+- Re-layout and fit controls
 
-### Learn BFS and Dijkstra
+### Algorithm lab
 
-The Algorithm Lab animates two algorithms on the same social graph:
+The DSA lab visualizes:
 
-- **BFS** finds the path with the fewest friendship hops.
-- **Dijkstra** finds the strongest weighted path, where close mutual connections make an edge cheaper.
+- **BFS**, for the fewest friendship hops
+- **Dijkstra**, for the strongest weighted path
 
-You can play, pause, reset, or step through each algorithm one operation at a time.
+You can play, pause, reset, or step through the traversal frame by frame.
 
-### Manage connections
+### Local persistence
 
-Send, accept, decline, and remove friend requests while the graph updates immediately.
-
-### Inspect network analytics
-
-View graph density, average degree, connected components, diameter, clustering, and the most connected people in the network.
+The project uses `localStorage` for demo data, accounts, requests, friendships, theme preference, and the current session. If browser storage is unavailable, it falls back to in-memory storage for the current page session.
 
 ---
 
-## Demo access
+## Demo Access
 
-The app includes ready-to-use demo profiles:
+Use any of these demo accounts:
 
-| Username | Password |
-| --- | --- |
-| `faizan` | `demo123` |
-| `kaushik` | `demo123` |
-| `arya` | `demo123` |
-| `animesh` | `demo123` |
+| Username | Email | Password |
+| --- | --- | --- |
+| `faizan` | `faizan@demo.com` | `demo123` |
+| `kaushik` | `kaushik@demo.com` | `demo123` |
+| `arya` | `arya@demo.com` | `demo123` |
+| `animesh` | `animesh@demo.com` | `demo123` |
 
-You can also create a new local account from the registration screen.
-
-> This is a frontend demo. Authentication and data are stored locally in the browser and are not suitable for production use.
+You can sign in with either the username or email.
 
 ---
 
-## How the graph works
+## Run Locally
 
-```mermaid
-flowchart LR
-    A[Current user] --> B[Direct friends]
-    B --> C[Friends of friends]
-    C --> D[Recommendation engine]
-    D --> E[Ranked suggestions]
-    A --> F[Network explorer]
-    A --> G[Algorithm Lab]
-    G --> H[BFS and Dijkstra]
-```
+No build tool or dependency installation is required.
 
-Friendships are stored as an undirected adjacency list. That means a connection works in both directions while remaining efficient to query and traverse.
-
-The weighted edge cost is:
-
-```text
-edge cost = 1 + 2 / (1 + number of mutual friends)
-```
-
-A friendship with many mutual connections has a lower cost, allowing Dijkstra to prefer a strong multi-hop route over a weak direct connection.
-
----
-
-## Project structure
-
-```text
-social_network_website/
-├── index.html    # HTML shell and app mount point
-├── styles.css    # Design tokens, layouts, components, and responsive styles
-├── script.js     # Storage, graph logic, recommendations, views, and interactions
-└── README.md     # Project documentation
-```
-
-### Main JavaScript responsibilities
-
-- `Storage` handles versioned local persistence.
-- `SocialGraph` manages users, edges, BFS, Dijkstra, and analytics.
-- `MinHeap` powers the Dijkstra priority queue.
-- `RecommendationEngine` ranks possible connections.
-- `Api` provides an async data-layer boundary for future REST integration.
-- `NetworkView` renders the force-directed canvas graph.
-- `DsaLab` animates BFS and Dijkstra.
-
----
-
-## Run it locally
-
-No build tool or package installation is required.
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/MOHAMMED-FAIZAN-KHAN/graph-based-Social-Network-Friend-Suggestion-System.git
-   ```
-
-2. Open the project folder.
-
-3. Open `index.html` in a browser.
-
-For the smoothest development experience, serve the folder with any local static server. For example, with Python:
+Open `index.html` directly in your browser, or serve the folder with a small static server:
 
 ```bash
 python -m http.server 8000
 ```
 
-Then visit:
+Then open:
 
 ```text
 http://localhost:8000
@@ -168,49 +96,80 @@ http://localhost:8000
 
 ---
 
-## Design principles
+## Project Structure
 
-Graph Social is designed around a few simple ideas:
-
-- Make complex algorithms visible.
-- Explain recommendations instead of hiding them.
-- Keep common actions quick and clear.
-- Make the graph feel like a living map.
-- Preserve a useful experience on small screens.
-- Keep the frontend dependency-free and easy to inspect.
-
-The visual system includes light and dark themes, responsive navigation, animated cards, accessible focus states, loading skeletons, feedback toasts, and an interactive canvas experience.
+```text
+social_network_website/
+|-- index.html    # HTML shell, app mount point, and background canvas
+|-- styles.css    # Design tokens, auth UI, app shell, cards, graph, and responsive styles
+|-- script.js     # Data, graph logic, rendering, auth binding, canvas controllers, and app events
+|-- README.md     # Project documentation
+```
 
 ---
 
-## Future direction
+## Main JavaScript Modules
 
-The current app uses local browser storage, but its data layer is intentionally separated from the interface. That makes it possible to replace the demo persistence layer with a real backend later.
+- `Storage` handles versioned local persistence.
+- `SocialGraph` manages users, edges, BFS, Dijkstra, and analytics.
+- `MinHeap` powers Dijkstra's priority queue.
+- `RecommendationEngine` ranks people you may know.
+- `Api` acts as an async data boundary for future backend integration.
+- `AuthEffects` manages the login particle background, mini network canvas, and card tilt.
+- `NetworkView` renders the interactive force-directed graph.
+- `DsaLab` animates BFS and Dijkstra.
 
-Possible next steps include:
+---
+
+## Recent Sync Fixes
+
+The app was updated so the login screen and script boot order are synchronized:
+
+- Login DOM events now bind inside `bindLogin()` after `renderLogin()` creates the elements.
+- The canvas background and auth animations mount through `AuthEffects`.
+- Auth animation cleanup runs before switching views.
+- Register view now uses the same auth wrapper and is visible immediately.
+- Auth-only CSS is scoped so it does not override dashboard buttons and forms.
+- The signed-in app can scroll normally, while auth screens remain full-screen.
+
+Validation performed:
+
+```bash
+node --check script.js
+```
+
+---
+
+## Graph Logic
+
+Friendships are stored as an undirected adjacency list. A friendship is saved once but works in both directions.
+
+The weighted edge cost is:
+
+```text
+edge cost = 1 + 2 / (1 + number of mutual friends)
+```
+
+More mutual friends make a connection cheaper, so Dijkstra can prefer stronger multi-hop routes over weaker direct paths.
+
+---
+
+## Backend Path
+
+The frontend already has an `Api` layer, so the local persistence can later be replaced with REST endpoints without rewriting the UI.
+
+Possible next steps:
 
 - REST API integration
-- Secure server-side authentication
+- Secure authentication
 - MySQL or PostgreSQL persistence
 - Real-time notifications
-- Larger graph datasets
-- Community detection and graph clustering
-- Friend recommendation evaluation metrics
-
-The interface is already prepared for that journey: the graph is the foundation, and the backend can grow around it.
+- Larger network datasets
+- Community detection
+- Recommendation evaluation metrics
 
 ---
 
-## Why this project matters
+## Note
 
-A recommendation is more useful when you can understand it.
-
-Graph Social is not just a social network mockup. It is a visual explanation of how relationships, algorithms, and communities fit together. It turns abstract data structures into something you can explore with your own hands.
-
-**Do not just connect. Understand the network.**
-
----
-
-## License
-
-This project is intended for learning, demonstration, and portfolio use.
+This is a portfolio/demo frontend. Authentication is local to the browser and is not production security.
